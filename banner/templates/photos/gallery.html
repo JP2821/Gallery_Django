@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+
+    
+    <!--Utilização de um bootstrap para não fazer o uso de javascript-->
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+    <!-- lib de icons -->
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+
+    <style>
+        .image-thumbail{ /*Aqui criamos o nosso estilo de miniatura que 
+                           que é inserido dentro do card da imagem*/
+            height: 200px;
+
+            object-fit: cover; /* usamos o object fit para que a imagem
+                                  não venha a ficar distorcida */
+        }
+    </style>
+
+</head>
+<body class="m-5"> <!--Questão de margem-->
+
+    <div class = "container">
+        <div class = "row">
+            <div class="col-md-3"> <!--Criando o menu de navegação-->
+                
+                <div class="card">
+                    <div class="card-header">
+                        Categories
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        
+                        <li class="list-group-item">
+                            <a href="{% url 'gallery' %}">All</a>
+                        </li>
+                        
+                        {% for category in categories %}
+
+                        <li class="list-group-item">
+                            <a href="{% url 'gallery' %}?category={{category.name}}">
+                                {{category.name}}
+                            </a> 
+                        </li>
+                        
+                        {% endfor %}
+
+                        <!-- Estrutura da classe {objeto} {cor do objeto} {o quanto ele vai ocupar} {margem} -->
+                        <a href="{% url 'add' %}" class="btn btn-dark btn-block btn-sm m-1">
+                            Add Photo
+                         </a>
+                        
+                    </ul>
+                </div>
+            
+            </div>
+            
+            <div class="col-md-9"> <!--Criando um sistema de grade com 3 colunas e espaçamento de 9 entre os cards-->
+               <div class="row">
+                    
+                {% for photo in photos %}
+                    <div class="col-md-4">
+                            <div class="card my-2">
+            
+                                <img class="image-thumbail" 
+                                src="{{photo.image.url}}" 
+                                alt="Card image cap"/>
+                                
+                                <div class="card-body"> <!-- Aqui fixamos os botões e corpo da imagem e também sua categoria-->
+                                    <small>Category: {{photo.category.name}}</small>
+                                <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a  href = "{% url 'photo' photo.id %}" class="btn btn-outline-dark btn-sm"><span class="lnr lnr-eye"></a>
+                                            <a  href = "{% url 'photo' photo.id %}" class="btn btn-outline-dark btn-sm"><span> &#10000; </span></a>
+                                        </div>
+                                    <small class="text-muted"></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                {% empty %}
+                <h3>No photos</h3>
+                {% endfor %}
+               </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
